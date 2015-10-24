@@ -13,7 +13,7 @@ function analyzeReceivedNode(node) {
 	var level = 1;
 	var node_tmp = node;
 	items.length = 0;
-	while (!node_tmp.hasOwnProperty("畢業生總計")) {
+	while (!node_tmp.hasOwnProperty("正在接受職業訓練")) {
 		node_tmp = node_tmp[Object.keys(node_tmp)[0]];
 		++level;
 	}
