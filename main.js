@@ -142,14 +142,14 @@ function createView(viewObj) {
 			.attr('d', arc)
 			.attr('fill-rule', 'evenodd')
 			.style('fill', function(d, i) {
-				if (d.depth == 0)
+				if (d.depth === 0)
 					return 'transparent';
 				return color(i % 10);
 			})
 			.on('mouseover', function(evt) {
 				// if it was locked
 				// or whatever
-				if (evt.depth == 0) {
+				if (evt.depth === 0) {
 					d3.selectAll('#pie').classed('focused', false);
       				return;
 				}
@@ -212,7 +212,7 @@ var chart2_scope = function(){
 	var colorize = [];
 	var color = d3.scale.category10();
 	for(var i=0 ; i<10 ; ++i) colorize.push( color(i) );
-	var color = d3.scale.category20();
+	color = d3.scale.category20();
 	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
 	color = d3.scale.category20b();
 	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
@@ -228,7 +228,7 @@ var chart2_scope = function(){
 			var nowX = Math.random() * maxWidth + diffWidth;
 			var nowY = Math.random() * maxHeight + diffHeight;
 			return 'translate('+nowX.toFixed(0)+' '+nowY.toFixed(0)+')';
-		}
+		};
 	}();
 
 	var jsonData = [];
@@ -240,12 +240,12 @@ var chart2_scope = function(){
 			});
 
 	var category = [];
-	for(var i=0 ; i<jsonData.length ; ++i)
+	for(i=0 ; i<jsonData.length ; ++i)
 		category.push({
-			work: k,
+			work: jsonData[i].work,
 			num: oriData[k],
 			colorCode: colorize[i]
-		})
+		});
 
 	var dataBind = d3.select("#iconExplain").selectAll('path').data(category);
 	dataBind.exit().remove();
@@ -289,7 +289,7 @@ var chart2_scope = function(){
 
 
 	var studentWork = [];
-	for(var i=0 ; i<jsonData.length ; ++i){
+	for(i=0 ; i<jsonData.length ; ++i){
 		var to = jsonData[i].num / 20;
 		for(var j=0 ; j<=to ; ++j)
 			studentWork.push({
@@ -300,6 +300,8 @@ var chart2_scope = function(){
 	}
 
 	var dataBind = d3.select("#chart2").selectAll('path').data(studentWork);
+	dataBind = d3.select("#chart2").selectAll('path').data(studentWork);
+	var studentsSet = dataBind.enter().append('path');
 	dataBind.exit().remove();
 	var studentsSet = dataBind.enter().append('path');
 	studentsSet.attr({
@@ -316,5 +318,4 @@ var chart2_scope = function(){
 		.attr('transform' , function(it){ return it.pos + ' scale(0.5 0.5)'; });
 
 	return null;
-};
-chart2_scope();
+}();
