@@ -3,11 +3,14 @@ var items = [];
 
 $.getJSON("data.json", function(data) {
 	root = data;
+	// create view
+	createView(transformData(root));
 });
 
 function analyzeReceivedNode(node) {
 	var level = 1;
 	var node_tmp = node;
+	items.length = 0;
 	while (!node_tmp.hasOwnProperty("畢業生總計")) {
 		node_tmp = node_tmp[Object.keys(node_tmp)[0]];
 		++level;
@@ -71,29 +74,24 @@ function parseItemArray(items) {
 }
 
 var dimension = {
-	size: 400,
-	diameter: 300
+	size: 600,
+	diameter: 500
 };
 
 dimension.spacing = (dimension.size - dimension.diameter) / 2;
 
 var chart1 = d3.select('#chart1');
-chart1
+var pie = chart1
 	.attr('width', dimension.size)
-	.attr('height', dimension.size);
-
-var pie = chart1.append('rect')
+	.attr('height', dimension.size)
 	.attr('x', dimension.spacing)
 	.attr('y', dimension.spacing)
-	.attr('width', dimension.diameter)
-	.attr('height', dimension.diameter)
-	.attr('fill', '#232323')
 	.append('g')
 		.attr('id', 'pie')
 		.attr('transform', 'translate(' + (dimension.size / 2) + ', ' + (dimension.size / 2) + ')');
 
 var partition = d3.layout.partition()
-    .size([2 * Math.PI, dimension.radius * dimension.radius])
+    .size([2 * Math.PI, dimension.diameter * dimension.diameter / 4])
     .value(function(d) { return d.size; });
 
 var arc = d3.svg.arc()
@@ -102,22 +100,18 @@ var arc = d3.svg.arc()
 	.innerRadius(function(d) { return Math.sqrt(d.y); })
 	.outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
 
-d3.json('data.json', function(json) {
-	createView(transformData(json));
-});
-
 function transformData(json) {
-	var root = {name: 'root', children: mktree(json)};
+	var root = {name: 'root', children: makeTreeRecursively(json)};
 	console.log(root, json);
 	return root;
 }
 
-function mktree(arr) {
+function makeTreeRecursively(arr) {
 	var list = [];
 	for(var k in arr) {
 		// if v is an Array
 		if (typeof arr[k] === 'object') {
-			list.push({name: k, children: mktree(arr[k]), original: arr[k]});
+			list.push({name: k, children: makeTreeRecursively(arr[k]), original: arr[k]});
 		} else {
 			list.push({name: k, size: arr[k]});
 		}
@@ -126,19 +120,45 @@ function mktree(arr) {
 }
 
 function createView(viewObj) {
-	pie.append('circle')
-		.attr('r', dimension.diameter)
-		.attr('fill', '#f44336');
+	//yeeinit function about color
+	var color = d3.scale.category10();
 
-	var nodes = partition.nodes(viewObj);
+	pie.append('circle')
+		.attr('r', dimension.diameter / 2)
+		.style('opacity', 0)
+		.on('mouseleave', function() {
+			// if not locked clear the selection
+			d3.selectAll('#pie').classed('focused', false);
+		});
+
+	var nodes = partition.nodes(viewObj).filter(function(d) {
+		return d.depth <= 3 && d.dx > 0.002;
+	});
 	var path = pie.data([viewObj])
 		.selectAll('path')
 		.data(nodes)
 		.enter()
 			.append('path')
 			.attr('d', arc)
-			.attr('fill-rule', 'evenodd');
-			// .style('')
+			.attr('fill-rule', 'evenodd')
+			.style('fill', function(d, i) {
+				if (d.depth == 0)
+					return 'transparent';
+				return color(i % 10);
+			})
+			.on('mouseover', function(evt) {
+				// if it was locked
+				// or whatever
+				if (evt.depth == 0) {
+					d3.selectAll('#pie').classed('focused', false);
+      				return;
+				}
+				d3.selectAll('#pie').classed('focused', true);
+      			analyzeReceivedNode(evt.original);
+			})
+			.on('click', function() {
+				// toggle lock
+			});
 }
 
 /* below is chart */
@@ -267,7 +287,7 @@ var chart2_scope = function(){
 			'fill': function(it){ return it.colorCode; }
 		}).text(function(it,id){ return it.work });
 
-	
+
 	var studentWork = [];
 	for(var i=0 ; i<jsonData.length ; ++i){
 		var to = jsonData[i].num / 20;
