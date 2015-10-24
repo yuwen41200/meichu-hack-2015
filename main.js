@@ -6,6 +6,7 @@ $.getJSON("data.json", function(data) {
 	root = data;
 	// create view
 	createView(transformData(root));
+	yeee();
 });
 
 function analyzeReceivedNode(node) {
