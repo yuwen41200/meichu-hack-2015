@@ -71,29 +71,24 @@ function parseItemArray(items) {
 }
 
 var dimension = {
-	size: 400,
-	diameter: 300
+	size: 600,
+	diameter: 500
 };
 
 dimension.spacing = (dimension.size - dimension.diameter) / 2;
 
 var chart1 = d3.select('#chart1');
-chart1
+var pie = chart1
 	.attr('width', dimension.size)
-	.attr('height', dimension.size);
-
-var pie = chart1.append('rect')
+	.attr('height', dimension.size)
 	.attr('x', dimension.spacing)
 	.attr('y', dimension.spacing)
-	.attr('width', dimension.diameter)
-	.attr('height', dimension.diameter)
-	.attr('fill', '#232323')
 	.append('g')
 		.attr('id', 'pie')
 		.attr('transform', 'translate(' + (dimension.size / 2) + ', ' + (dimension.size / 2) + ')');
 
 var partition = d3.layout.partition()
-    .size([2 * Math.PI, dimension.radius * dimension.radius])
+    .size([2 * Math.PI, dimension.diameter * dimension.diameter / 4])
     .value(function(d) { return d.size; });
 
 var arc = d3.svg.arc()
@@ -126,18 +121,28 @@ function mktree(arr) {
 }
 
 function createView(viewObj) {
-	pie.append('circle')
-		.attr('r', dimension.diameter)
-		.attr('fill', '#f44336');
+	//yeeinit function about color
+	var color = d3.scale.category10();
 
-	var nodes = partition.nodes(viewObj);
+	pie.append('circle')
+		.attr('r', dimension.diameter / 2)
+		.style('opacity', 0)
+
+	var nodes = partition.nodes(viewObj).filter(function(d) {
+		return d.depth <= 3;
+	});
 	var path = pie.data([viewObj])
 		.selectAll('path')
 		.data(nodes)
 		.enter()
 			.append('path')
 			.attr('d', arc)
-			.attr('fill-rule', 'evenodd');
+			.attr('fill-rule', 'evenodd')
+			.style('fill', function(d, i) {
+				if (d.depth == 0)
+					return 'transparent';
+				return color(i+1 % 10);
+			});
 			// .style('')
 }
 
