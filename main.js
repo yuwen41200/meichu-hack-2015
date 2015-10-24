@@ -78,10 +78,11 @@ function parseItemArray(items) {
 }
 
 var dimension = {
-	size: 600,
-	diameter: 500
+	size: 840,
+	diameter: 760
 };
 
+dimension.radius = dimension.size / 2;
 dimension.spacing = (dimension.size - dimension.diameter) / 2;
 
 var chart1 = d3.select('#chart1');
@@ -92,7 +93,10 @@ var pie = chart1
 	.attr('y', dimension.spacing)
 	.append('g')
 		.attr('id', 'pie')
-		.attr('transform', 'translate(' + (dimension.size / 2) + ', ' + (dimension.size / 2) + ')');
+		.attr('transform', 'translate(' + dimension.radius + ', ' + dimension.radius + ')');
+
+d3.select('#yeeee-text')
+	.attr('transform', 'translate(' + dimension.radius + ', ' + dimension.radius + ')');
 
 var partition = d3.layout.partition()
 	.size([2 * Math.PI, dimension.diameter * dimension.diameter / 4])
@@ -142,7 +146,7 @@ function createView(viewObj) {
 		});
 
 	var nodes = partition.nodes(viewObj).filter(function(d) {
-		return d.depth <= 3 && d.dx > 0.002;
+		return d.depth <= 3 && d.dx > 5e-5;
 	});
 	var path = pie.data([viewObj])
 		.selectAll('path')
