@@ -4,7 +4,9 @@ $.getJSON( "data.json", function(data) {
 	$.each(data, function(key, val) {
 		$.each(val, function(keyy, vall) {
 			$.each(vall, function(keyyy, valll) {
-				items.push({foo: keyyy, bar: valll});
+				$.each(valll, function(keyyyy, vallll) {
+					items.push({foo: keyyyy, bar: vallll});
+				});
 			});
 		});
 	});
