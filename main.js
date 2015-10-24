@@ -67,11 +67,11 @@ function yeee(node) {
 }
 
 function parseItemArray(items) {
-	for (var i = 0; i < 43; ++i) {
-		var j = i + 43;
+	for (var i = 0; i < 39; ++i) {
+		var j = i + 39;
 		while (j < items.length) {
 			items[i].bar += items[j].bar;
-			j += 43;
+			j += 39;
 		}
 	}
 	chart2_scope();
@@ -223,7 +223,7 @@ var chart2_scope = function(){
 		d3.select("#chart2").selectAll('path').remove();
 
 		var category = [];
-		for(i=0 ; i<43 && items.length ; ++i)
+		for(i=0 ; i<39 && items.length ; ++i)
 			category.push({
 				work: items[i].foo,
 				num: items[i].bar,
