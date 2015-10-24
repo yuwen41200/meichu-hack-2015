@@ -96,8 +96,8 @@ var partition = d3.layout.partition()
 var arc = d3.svg.arc()
 	.startAngle(function(d) { return d.x; })
 	.endAngle(function(d) { return d.x + d.dx; })
-	.innerRadius(function(d) { return Math.sqrt(d.y - 20); })
-	.outerRadius(function(d) { return Math.sqrt(d.y - 20 + d.dy); });
+	.innerRadius(function(d) { return Math.sqrt(d.y); })
+	.outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
 
 function transformData(json) {
 	var root = {name: 'root', children: mktree(json)};
@@ -148,11 +148,16 @@ function createView(viewObj) {
 			.on('mouseover', function(evt) {
 				// if it was locked
 				// or whatever
+				if (evt.depth == 0) {
+					d3.selectAll('#pie path')
+      					.style('opacity', 1);
+      				return;
+				}
 				d3.selectAll('#pie path')
       				.style('opacity', function(d) {
-      					if (evt.depth == 0) return 1;
       					return (d == evt) ? 1 : .3;
       				});
+      			analyzeReceivedNode(evt.original);
 			})
 			.on('click', function() {
 				// toggle lock
