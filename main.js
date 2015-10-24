@@ -92,19 +92,6 @@ var pie = chart1.append('rect')
 		.attr('id', 'pie')
 		.attr('transform', 'translate(' + (dimension.size / 2) + ', ' + (dimension.size / 2) + ')');
 
-var chart2 = d3.select('#chart2');
-chart2
-	.attr('width', dimension.size)
-	.attr('height', dimension.size);
-chart2.append('rect')
-	.attr('x', dimension.spacing)
-	.attr('y', dimension.spacing)
-	.attr('width', dimension.diameter)
-	.attr('height', dimension.diameter)
-	.attr('stroke', '#ff6600')
-	.attr('stroke-width', 5.5)
-	.attr('fill-opacity', 0.1);
-
 var partition = d3.layout.partition()
     .size([2 * Math.PI, dimension.radius * dimension.radius])
     .value(function(d) { return d.size; });
