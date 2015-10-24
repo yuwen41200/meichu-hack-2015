@@ -105,9 +105,7 @@ var arc = d3.svg.arc()
 	.outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
 
 function transformData(json) {
-	var root = {name: 'root', children: makeTreeRecursively(json)};
-	console.log(root, json);
-	return root;
+	return {name: 'root', children: makeTreeRecursively(json)};
 }
 
 function makeTreeRecursively(arr) {
@@ -123,6 +121,14 @@ function makeTreeRecursively(arr) {
 	return list;
 }
 
+function pieClearSelection() {
+	d3.selectAll('#pie').classed('focused', false);
+	d3.select('#yeeee1').text('');
+	d3.select('#yeeee2').text('');
+	d3.select('#yeeee3').text('');
+	d3.select('#yeeeey').text('');
+}
+
 function createView(viewObj) {
 	//yeeinit function about color
 	var color = d3.scale.category10();
@@ -132,7 +138,7 @@ function createView(viewObj) {
 		.style('opacity', 0)
 		.on('mouseleave', function() {
 			// if not locked clear the selection
-			d3.selectAll('#pie').classed('focused', false);
+			pieClearSelection();
 		});
 
 	var nodes = partition.nodes(viewObj).filter(function(d) {
@@ -153,15 +159,23 @@ function createView(viewObj) {
 			.on('mouseover', function(evt) {
 				// if it was locked
 				// or whatever
+				pieClearSelection();
+				// show text in the middle of the graph
+				d3.select('#yeeee1').text('[ 總計 ]');
+				// show all number
+				d3.select('#yeeeey').text(evt.value)
 				if (evt.depth === 0) {
 					d3.selectAll('#pie').classed('focused', false);
 					return;
 				}
 				d3.selectAll('#pie').classed('focused', true);
-				// show text in the middle of the graph
-				// d3.select("#percentage")
-				// 	.text();
 
+				var yyee = evt;
+				switch (evt.depth) {
+					case 3: d3.select('#yeeee3').text(yyee.name); yyee = yyee.parent;
+					case 2: d3.select('#yeeee2').text(yyee.name); yyee = yyee.parent;
+					case 1: d3.select('#yeeee1').text(yyee.name);
+				}
 				// d3.select("#explanation")
 				// 	.style("visibility", "");
 				analyzeReceivedNode(evt.original);
