@@ -1,3 +1,4 @@
+// 檔 不能 沒有註解
 var root = null;
 var items = [];
 
