@@ -1,3 +1,4 @@
+// 檔 不能 沒有註解
 var root = null;
 var items = [];
 
@@ -5,6 +6,7 @@ $.getJSON("data.json", function(data) {
 	root = data;
 	// create view
 	createView(transformData(root));
+	yeee();
 });
 
 function analyzeReceivedNode(node) {
@@ -28,6 +30,7 @@ function y(node) {
 	$.each(node, function(keyyyy, vallll) {
 		items.push({foo: keyyyy, bar: vallll});
 	});
+	chart2_scope();
 }
 
 function ye(node) {
@@ -71,6 +74,7 @@ function parseItemArray(items) {
 			j += 43;
 		}
 	}
+	chart2_scope();
 }
 
 var dimension = {
