@@ -73,7 +73,7 @@ function parseItemArray(items) {
 var dimension = {
 	size: 400,
 	diameter: 300
-}
+};
 
 dimension.spacing = (dimension.size - dimension.diameter) / 2;
 
@@ -134,7 +134,7 @@ function mktree(arr) {
 		} else {
 			list.push({name: k, size: arr[k]});
 		}
-	};
+	}
 	return list;
 }
 
@@ -217,21 +217,21 @@ var chart2_scope = function(){
 			var nowX = Math.random() * maxWidth + diffWidth;
 			var nowY = Math.random() * maxHeight + diffHeight;
 			return 'translate('+nowX.toFixed(0)+' '+nowY.toFixed(0)+')';
-		}
+		};
 	}();
 
 	var colorize = [];
 	var color = d3.scale.category10();
 	for(var i=0 ; i<10 ; ++i) colorize.push( color(i) );
-	var color = d3.scale.category20();
-	for(var i=0 ; i<20 ; i+=2) colorize.push( color(i) );
-	var color = d3.scale.category20b();
-	for(var i=0 ; i<20 ; i+=2) colorize.push( color(i) );
-	var color = d3.scale.category20c();
-	for(var i=0 ; i<20 ; i+=2) colorize.push( color(i) );
+	color = d3.scale.category20();
+	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
+	color = d3.scale.category20b();
+	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
+	color = d3.scale.category20c();
+	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
 
 	var studentWork = [];
-	for(var i=0 ; i<jsonData.length ; ++i){
+	for(i=0 ; i<jsonData.length ; ++i){
 		var to = jsonData[i].num / 20;
 		for(var j=0 ; j<=to ; ++j)
 			studentWork.push({
@@ -255,7 +255,7 @@ var chart2_scope = function(){
 	studentsSet.transition()
 		.duration(800)
 		.delay(function(){ return (Math.random()*800).toFixed(0); })
-		.attr('transform' , function(it){ return it.pos + ' scale(0.5 0.5)' });
+		.attr('transform' , function(it){ return it.pos + ' scale(0.5 0.5)'; });
 
 	return null;
 }();
