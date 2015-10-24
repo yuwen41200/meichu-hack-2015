@@ -1,4 +1,3 @@
-
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var cssmin = require('gulp-cssmin');
@@ -20,7 +19,6 @@ gulp.task('default' , function(){
 gulp.task('nothing',function(){
 	console.log('reload');
 });
-
 
 function errorLog(error){
 	console.log(error.toString());
