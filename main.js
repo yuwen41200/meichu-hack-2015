@@ -186,14 +186,18 @@ var chart2_scope = function(){
 				"藝術娛樂及休閒服務業": 4,
 				"其他服務業": 16
 			};
-	var jsonData = [];
-	for(var k in oriData)
-		if( oriData[k]>0 )
-			jsonData.push({
-				work: k,
-				num: oriData[k]
-			});
 
+	// above is data pass to chart
+
+	var colorize = [];
+	var color = d3.scale.category10();
+	for(var i=0 ; i<10 ; ++i) colorize.push( color(i) );
+	var color = d3.scale.category20();
+	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
+	color = d3.scale.category20b();
+	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
+	color = d3.scale.category20c();
+	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
 	var renderBlock = document.querySelector('#studentsBlock');
 	var randPos = function(){
 		var maxWidth = renderBlock.offsetWidth * 0.9;
@@ -204,21 +208,46 @@ var chart2_scope = function(){
 			var nowX = Math.random() * maxWidth + diffWidth;
 			var nowY = Math.random() * maxHeight + diffHeight;
 			return 'translate('+nowX.toFixed(0)+' '+nowY.toFixed(0)+')';
-		};
+		}
 	}();
 
-	var colorize = [];
-	var color = d3.scale.category10();
-	for(var i=0 ; i<10 ; ++i) colorize.push( color(i) );
-	color = d3.scale.category20();
-	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
-	color = d3.scale.category20b();
-	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
-	color = d3.scale.category20c();
-	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
+	var jsonData = [];
+	for(var k in oriData)
+		if( oriData[k]>0 )
+			jsonData.push({
+				work: k,
+				num: oriData[k]
+			});
 
+	var category = [];
+	for(var i=0 ; i<jsonData.length ; ++i)
+		category.push({
+			work: k,
+			num: oriData[k],
+			colorCode: colorize[i]
+		})
+
+	var dataBind = d3.select("#iconExplain").selectAll('path').data(category);
+	var categorySet = dataBind.enter().append('path');
+	dataBind.exit().remove();
+	categorySet.attr({
+		'stroke': function(it){ return it.colorCode; },
+		'stroke-width': '2px',
+		'transform': function(it,id){
+			if( id<11 )
+				return 'translate(0 '+(id*20)+') scale(0.5 0.5)';
+			else if( id<22 )
+				return 'translate(150 '+((id-11)*20)+') scale(0.5 0.5)';
+			else
+				return 'translate(300 '+((id-22)*20)+') scale(0.5 0.5)';
+		},
+		'fill': 'none',
+		'd': 'M21.947,16.332C23.219,14.915,24,13.049,24,11c0-4.411-3.589-8-8-8s-8,3.589-8,8s3.589,8,8,8  c1.555,0,3.003-0.453,4.233-1.224c4.35,1.639,7.345,5.62,7.726,10.224H4.042c0.259-3.099,1.713-5.989,4.078-8.051  c0.417-0.363,0.46-0.994,0.097-1.411c-0.362-0.416-0.994-0.46-1.411-0.097C3.751,21.103,2,24.951,2,29c0,0.553,0.448,1,1,1h26  c0.553,0,1-0.447,1-1C30,23.514,26.82,18.615,21.947,16.332z M10,11c0-3.309,2.691-6,6-6s6,2.691,6,6s-2.691,6-6,6S10,14.309,10,11z'
+	});
+
+	
 	var studentWork = [];
-	for(i=0 ; i<jsonData.length ; ++i){
+	for(var i=0 ; i<jsonData.length ; ++i){
 		var to = jsonData[i].num / 20;
 		for(var j=0 ; j<=to ; ++j)
 			studentWork.push({
@@ -245,4 +274,5 @@ var chart2_scope = function(){
 		.attr('transform' , function(it){ return it.pos + ' scale(0.5 0.5)'; });
 
 	return null;
-}();
+};
+chart2_scope();
