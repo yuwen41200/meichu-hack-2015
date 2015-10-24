@@ -91,8 +91,8 @@ var pie = chart1
 		.attr('transform', 'translate(' + (dimension.size / 2) + ', ' + (dimension.size / 2) + ')');
 
 var partition = d3.layout.partition()
-    .size([2 * Math.PI, dimension.diameter * dimension.diameter / 4])
-    .value(function(d) { return d.size; });
+	.size([2 * Math.PI, dimension.diameter * dimension.diameter / 4])
+	.value(function(d) { return d.size; });
 
 var arc = d3.svg.arc()
 	.startAngle(function(d) { return d.x; })
@@ -151,10 +151,16 @@ function createView(viewObj) {
 				// or whatever
 				if (evt.depth === 0) {
 					d3.selectAll('#pie').classed('focused', false);
-      				return;
+					return;
 				}
 				d3.selectAll('#pie').classed('focused', true);
-      			analyzeReceivedNode(evt.original);
+				// show text in the middle of the graph
+				// d3.select("#percentage")
+				// 	.text();
+
+				// d3.select("#explanation")
+				// 	.style("visibility", "");
+				analyzeReceivedNode(evt.original);
 			})
 			.on('click', function() {
 				// toggle lock
