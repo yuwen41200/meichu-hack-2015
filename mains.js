@@ -23,16 +23,3 @@ chart1.append('rect')
 	.attr('width', 60)
 	.attr('height', 60)
 	.attr('fill', '#232323');
-
-var chart2 = d3.select('#chart2');
-chart2
-	.attr('width', 100)
-	.attr('height', 100);
-chart2.append('rect')
-	.attr('x', 20)
-	.attr('y', 20)
-	.attr('width', 60)
-	.attr('height', 60)
-	.attr('stroke', '#ff6600')
-	.attr('stroke-width', 5.5)
-	.attr('fill-opacity', 0.1);
