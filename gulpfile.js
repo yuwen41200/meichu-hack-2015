@@ -5,18 +5,7 @@ var cssmin = require('gulp-cssmin');
 var autoprefixer = require('gulp-autoprefixer');
 var browsersSync = require('browser-sync');
 
-gulp.task('default' , ['scss']);
-
-gulp.task('scss' , function(){
-	return gulp.src('meichu.scss')
-		.pipe(sass())
-		.on('error' , errorLog )
-		.pipe(autoprefixer(['last 10 version']))
-		.pipe(cssmin())
-		.pipe(gulp.dest('./'));
-});
-
-gulp.task('debug' , ['scss'] , function(){
+gulp.task('default' , function(){
 	var reload = browsersSync.reload;
 	browsersSync({
 		server: {
@@ -24,9 +13,12 @@ gulp.task('debug' , ['scss'] , function(){
       }
 	});
 
-	gulp.watch( './meichu.scss' ,['scss',reload]);
-	gulp.watch( './script.js' ,['default',reload] );
-	gulp.watch( './index.html' ,['default',reload] );
+	gulp.watch( './main.js' ,['nothing',reload] );
+	gulp.watch( './index.html' ,['nothing',reload] );
+});
+
+gulp.task('nothing',function(){
+	console.log('reload');
 });
 
 
