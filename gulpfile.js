@@ -25,6 +25,7 @@ gulp.task('debug' , ['scss'] , function(){
 	});
 
 	gulp.watch( './meichu.scss' ,['scss',reload]);
+	gulp.watch( './script.js' ,['default',reload] );
 	gulp.watch( './index.html' ,['default',reload] );
 });
 
