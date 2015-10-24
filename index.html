@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
 	<style type="text/css">
 		body { padding-top: 50px; }
-    path {
+    #pie path {
       stroke: white;
       transition-property: opacity, fill;
       transition-duration: 100ms;
@@ -49,7 +49,12 @@
 				<div class="well well-sm">學校選擇</div>
 			</article>
 			<article class="col-md-8">
-				<svg id="chart1"></svg>
+				<svg id="chart1">
+          <g>
+            <text x=""></text>
+            <text x=""></text>
+          </g>
+        </svg>
 			</article>
 		</div>
 	</section>
