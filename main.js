@@ -10,6 +10,7 @@ $.getJSON("data.json", function(data) {
 function analyzeReceivedNode(node) {
 	var level = 1;
 	var node_tmp = node;
+	items.length = 0;
 	while (!node_tmp.hasOwnProperty("畢業生總計")) {
 		node_tmp = node_tmp[Object.keys(node_tmp)[0]];
 		++level;
@@ -100,17 +101,17 @@ var arc = d3.svg.arc()
 	.outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
 
 function transformData(json) {
-	var root = {name: 'root', children: mktree(json)};
+	var root = {name: 'root', children: makeTreeRecursively(json)};
 	console.log(root, json);
 	return root;
 }
 
-function mktree(arr) {
+function makeTreeRecursively(arr) {
 	var list = [];
 	for(var k in arr) {
 		// if v is an Array
 		if (typeof arr[k] === 'object') {
-			list.push({name: k, children: mktree(arr[k]), original: arr[k]});
+			list.push({name: k, children: makeTreeRecursively(arr[k]), original: arr[k]});
 		} else {
 			list.push({name: k, size: arr[k]});
 		}
@@ -127,7 +128,7 @@ function createView(viewObj) {
 		.style('opacity', 0)
 		.on('mouseleave', function() {
 			// if not locked clear the selection
-			d3.selectAll('#pie path').style('opacity', 1);
+			d3.selectAll('#pie').classed('focused', false);
 		});
 
 	var nodes = partition.nodes(viewObj).filter(function(d) {
@@ -143,20 +144,16 @@ function createView(viewObj) {
 			.style('fill', function(d, i) {
 				if (d.depth == 0)
 					return 'transparent';
-				return color(i+1 % 10);
+				return color(i % 10);
 			})
 			.on('mouseover', function(evt) {
 				// if it was locked
 				// or whatever
 				if (evt.depth == 0) {
-					d3.selectAll('#pie path')
-      					.style('opacity', 1);
+					d3.selectAll('#pie').classed('focused', false);
       				return;
 				}
-				d3.selectAll('#pie path')
-      				.style('opacity', function(d) {
-      					return (d == evt) ? 1 : .3;
-      				});
+				d3.selectAll('#pie').classed('focused', true);
       			analyzeReceivedNode(evt.original);
 			})
 			.on('click', function() {

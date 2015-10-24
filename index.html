@@ -6,7 +6,18 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
 	<style type="text/css">
 		body { padding-top: 50px; }
-    path { stroke: white; transition-property: opacity, fill; transition-duration: 100ms; }
+    path {
+      stroke: white;
+      transition-property: opacity, fill;
+      transition-duration: 100ms;
+    }
+    #pie.focused path {
+      opacity: .3;
+    }
+    #pie.focused path:hover {
+      opacity: 1;
+    }
+
 	</style>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
