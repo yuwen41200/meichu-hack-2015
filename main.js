@@ -167,7 +167,7 @@ function createView(viewObj) {
 				// show text in the middle of the graph
 				d3.select('#yeeee1').text('[ 總計 ]');
 				// show all number
-				d3.select('#yeeeey').text(evt.value)
+				d3.select('#yeeeey').text(evt.value);
 				if (evt.depth === 0) {
 					d3.selectAll('#pie').classed('focused', false);
 					return;
@@ -177,7 +177,9 @@ function createView(viewObj) {
 				var yyee = evt;
 				switch (evt.depth) {
 					case 3: d3.select('#yeeee3').text(yyee.name); yyee = yyee.parent;
-					case 2: d3.select('#yeeee2').text(yyee.name); yyee = yyee.parent;
+					/* falls through */
+					case 2: d3.select('#yeeee2').text(yyee.name); yyee = yyee.parent; 
+					/* falls through */
 					case 1: d3.select('#yeeee1').text(yyee.name);
 				}
 				// d3.select("#explanation")
@@ -250,7 +252,7 @@ var chart2_scope = function(){
 		});
 
 		var texts = [];
-		for(var i=0 ; i<category.length ; ++i){
+		for(i=0 ; i<category.length ; ++i){
 			texts.push({
 				data: category[i].work , colorCode: category[i].colorCode
 			});
@@ -263,15 +265,15 @@ var chart2_scope = function(){
 		categorySetText = dataBind.enter().append('text');
 		categorySetText.attr({
 				'x': function(it,id){
-					if( id%2 == 0 ) return '48';
+					if( id%2 === 0 ) return '48';
 					else return '270';
 				},
 				'y': function(it,id){
-					if( id%2 == 0 ) return id*10 + 13;
+					if( id%2 === 0 ) return id*10 + 13;
 					else return (id-1)*10 + 13;
 				},
 				'fill': function(it){ return it.colorCode; }
-			}).text(function(it){ console.log(it); return it.data; });
+			}).text(function(it){ return it.data; });
 
 
 		var studentWork = [];
@@ -300,6 +302,6 @@ var chart2_scope = function(){
 			.attr('transform' , function(it){ return it.pos + ' scale(0.5 0.5)'; });
 
 		return true;
-	}
+	};
 }();
 chart2_scope();
