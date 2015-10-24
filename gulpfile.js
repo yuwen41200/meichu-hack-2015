@@ -20,7 +20,7 @@ gulp.task('debug' , ['scss'] , function(){
 	var reload = browsersSync.reload;
 	browsersSync({
 		server: {
-      	baseDir: './build/'
+      	baseDir: './'
       }
 	});
 
