@@ -193,14 +193,15 @@ function createView(viewObj) {
 
 var chart2_scope = function(){
 	var colorize = [];
-	var color = d3.scale.category10();
-	for(var i=0 ; i<10 ; ++i) colorize.push( color(i) );
-	color = d3.scale.category20();
-	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
+	var color;
 	color = d3.scale.category20b();
 	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
 	color = d3.scale.category20c();
 	for(i=0 ; i<20 ; i+=2) colorize.push( color(i) );
+	color = d3.scale.category10();
+	for(var i=0 ; i<10 ; ++i) colorize.push( color(i) );
+	color = d3.scale.category20();
+	for(i=0 ; i<20 ; ++i) colorize.push( color(i) );
 	var renderBlock = document.querySelector('#studentsBlock');
 	var randPos = function(){
 		var maxWidth = renderBlock.offsetWidth * 0.9;
@@ -216,9 +217,11 @@ var chart2_scope = function(){
 
 	var categorySetIcon;
 	var categorySetText;
+	var categorySetDetail;
 	var studentsSet;
 
 	return function(){
+
 		if( items.length <= 0 )
 			return false;
 
@@ -240,37 +243,35 @@ var chart2_scope = function(){
 			'stroke': function(it){ return it.colorCode; },
 			'stroke-width': '2px',
 			'transform': function(it,id){
-				if( id<12 )
-					return 'translate(28 '+(id*20)+') scale(0.5 0.5)';
-				else if( id<24 )
-					return 'translate(178 '+((id-12)*20)+') scale(0.5 0.5)';
-				else
-					return 'translate(328 '+((id-24)*20)+') scale(0.5 0.5)';
+				return 'translate(28 '+(id*20)+') scale(0.5 0.5)';
 			},
 			'fill': 'none',
 			'd': 'M21.947,16.332C23.219,14.915,24,13.049,24,11c0-4.411-3.589-8-8-8s-8,3.589-8,8s3.589,8,8,8  c1.555,0,3.003-0.453,4.233-1.224c4.35,1.639,7.345,5.62,7.726,10.224H4.042c0.259-3.099,1.713-5.989,4.078-8.051  c0.417-0.363,0.46-0.994,0.097-1.411c-0.362-0.416-0.994-0.46-1.411-0.097C3.751,21.103,2,24.951,2,29c0,0.553,0.448,1,1,1h26  c0.553,0,1-0.447,1-1C30,23.514,26.82,18.615,21.947,16.332z M10,11c0-3.309,2.691-6,6-6s6,2.691,6,6s-2.691,6-6,6S10,14.309,10,11z'
 		});
-		dataBind = d3.select("#iconExplain").selectAll('text').data(category);
+
+		var texts = [];
+		for(var i=0 ; i<category.length ; ++i){
+			texts.push({
+				data: category[i].work , colorCode: category[i].colorCode
+			});
+			texts.push({
+				data: category[i].num , colorCode: category[i].colorCode
+			});
+		}
+
+		dataBind = d3.select("#iconExplain").selectAll('text').data(texts);
 		categorySetText = dataBind.enter().append('text');
 		categorySetText.attr({
 				'x': function(it,id){
-					if( id<12 )
-						return '48';
-					else if( id<24 )
-						return '198';
-					else
-						return '348';
+					if( id%2 == 0 ) return '48';
+					else return '270';
 				},
 				'y': function(it,id){
-					if( id<12 )
-						return id*20 + 13;
-					else if( id<24 )
-						return (id-12)*20 + 13;
-					else
-						return (id-24)*20 + 13;
+					if( id%2 == 0 ) return id*10 + 13;
+					else return (id-1)*10 + 13;
 				},
 				'fill': function(it){ return it.colorCode; }
-			}).text(function(it,id){ return it.work });
+			}).text(function(it){ console.log(it); return it.data; });
 
 
 		var studentWork = [];
