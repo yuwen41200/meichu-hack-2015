@@ -3,6 +3,8 @@ var items = [];
 
 $.getJSON("data.json", function(data) {
 	root = data;
+	// create view
+	createView(transformData(root));
 });
 
 function analyzeReceivedNode(node) {
@@ -97,10 +99,6 @@ var arc = d3.svg.arc()
 	.innerRadius(function(d) { return Math.sqrt(d.y - 20); })
 	.outerRadius(function(d) { return Math.sqrt(d.y - 20 + d.dy); });
 
-d3.json('data.json', function(json) {
-	createView(transformData(json));
-});
-
 function transformData(json) {
 	var root = {name: 'root', children: mktree(json)};
 	console.log(root, json);
@@ -133,7 +131,7 @@ function createView(viewObj) {
 		});
 
 	var nodes = partition.nodes(viewObj).filter(function(d) {
-		return d.depth <= 3 && d.dx > 0.005;
+		return d.depth <= 3 && d.dx > 0.002;
 	});
 	var path = pie.data([viewObj])
 		.selectAll('path')
