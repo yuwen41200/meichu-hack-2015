@@ -14,9 +14,12 @@
 		}
 		#pie path {
 			stroke: white;
-			transition-property: opacity, fill;
+			transition-property: opacity, fill, filter;
 			transition-duration: 100ms;
 		}
+    #pie path.segment-pie {
+      cursor: pointer;
+    }
 		#pie.focused path {
 			opacity: .2;
 		}

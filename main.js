@@ -181,6 +181,9 @@ function createView(viewObj) {
 		.enter()
 			.append('path')
 			.attr('d', arc)
+			.attr('class', function(d) {
+				return d.depth === 0 ? 'heart-pie' : 'segment-pie';
+			})
 			.attr('fill-rule', 'evenodd')
 			.style('fill', function(d, i) {
 				if (d.depth === 0)
