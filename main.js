@@ -127,6 +127,7 @@ function makeTreeRecursively(arr) {
 }
 
 function pieSetSelection(obj) {
+	pieClearSelection();
 	// show text in the middle of the graph
 	d3.select('#yeeee1')
 		.text('[ 總計 ]')
@@ -197,7 +198,6 @@ function createView(viewObj) {
 					return;
 				}
 				// or whatever
-				pieClearSelection();
 				pieSetSelection(evt);
 				analyzeReceivedNode(evt.original);
 			})
@@ -211,6 +211,7 @@ function createView(viewObj) {
 				pieSelectedPath = this;
 				d3.select(this).classed('active', true);
 				pieSetSelection(evt);
+				analyzeReceivedNode(evt.original);
 			});
 }
 
