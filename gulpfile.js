@@ -1,7 +1,4 @@
 var gulp = require('gulp');
-var sass = require('gulp-sass');
-var cssmin = require('gulp-cssmin');
-var autoprefixer = require('gulp-autoprefixer');
 var browsersSync = require('browser-sync');
 
 gulp.task('default' , function(){
