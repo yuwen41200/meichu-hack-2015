@@ -252,10 +252,10 @@ var chart2_scope = function(){
 		var texts = [];
 		for(i=0 ; i<category.length ; ++i){
 			texts.push({
-				data: category[i].work , colorCode: category[i].colorCode
+				data: category[i].work , colorCode: category[i].colorCode , cid: i
 			});
 			texts.push({
-				data: category[i].num , colorCode: category[i].colorCode
+				data: category[i].num , colorCode: category[i].colorCode , cid: i
 			});
 		}
 
@@ -266,11 +266,20 @@ var chart2_scope = function(){
 					if( id%2 === 0 ) return '48';
 					else return '270';
 				},
+				'data-x': function(it,id){
+					if( id%2 === 0 ) return '48';
+					else return '270';
+				},
 				'y': function(it,id){
 					if( id%2 === 0 ) return id*10 + 13;
 					else return (id-1)*10 + 13;
 				},
-				'fill': function(it){ return it.colorCode; }
+				'data-y': function(it,id){
+					if( id%2 === 0 ) return id*10 + 13;
+					else return (id-1)*10 + 13;
+				},
+				'fill': function(it){ return it.colorCode; },
+				'class': function(it){ return 'cid'+it.cid }
 			}).text(function(it){ return it.data; });
 
 
@@ -280,9 +289,11 @@ var chart2_scope = function(){
 			var to = category[i].num / 100;
 			for(var j=0 ; j<=to ; ++j){
 				studentWork.push({
+					work: category[i].work,
 					colorCode: colorize[i],
 					pos: randPos(),
-					tpos: 'translate('+nowX+' '+nowY+')'
+					tpos: 'translate('+nowX+' '+nowY+')',
+					cid: i
 				});
 				nowX += 20;
 				if( nowX >= maxWidth ) nowX = 0 , nowY += 20;
@@ -296,7 +307,8 @@ var chart2_scope = function(){
 			'stroke-width': '2px',
 			'transform': function(it){ return it.pos + ' scale(0 0)'; },
 			'fill': 'none',
-			'd': 'M21.947,16.332C23.219,14.915,24,13.049,24,11c0-4.411-3.589-8-8-8s-8,3.589-8,8s3.589,8,8,8  c1.555,0,3.003-0.453,4.233-1.224c4.35,1.639,7.345,5.62,7.726,10.224H4.042c0.259-3.099,1.713-5.989,4.078-8.051  c0.417-0.363,0.46-0.994,0.097-1.411c-0.362-0.416-0.994-0.46-1.411-0.097C3.751,21.103,2,24.951,2,29c0,0.553,0.448,1,1,1h26  c0.553,0,1-0.447,1-1C30,23.514,26.82,18.615,21.947,16.332z M10,11c0-3.309,2.691-6,6-6s6,2.691,6,6s-2.691,6-6,6S10,14.309,10,11z'
+			'd': 'M21.947,16.332C23.219,14.915,24,13.049,24,11c0-4.411-3.589-8-8-8s-8,3.589-8,8s3.589,8,8,8  c1.555,0,3.003-0.453,4.233-1.224c4.35,1.639,7.345,5.62,7.726,10.224H4.042c0.259-3.099,1.713-5.989,4.078-8.051  c0.417-0.363,0.46-0.994,0.097-1.411c-0.362-0.416-0.994-0.46-1.411-0.097C3.751,21.103,2,24.951,2,29c0,0.553,0.448,1,1,1h26  c0.553,0,1-0.447,1-1C30,23.514,26.82,18.615,21.947,16.332z M10,11c0-3.309,2.691-6,6-6s6,2.691,6,6s-2.691,6-6,6S10,14.309,10,11z',
+			'class': function(it){ return 'cid'+it.cid }
 		});
 
 		studentsSet.transition()
@@ -308,6 +320,12 @@ var chart2_scope = function(){
 			.duration(800)
 			.delay(800)
 			.attr('transform' , function(it){ return it.tpos + ' scale(0.5 0.5)'; });
+
+		setTimeout( function(){
+			studentsSet.on('mouseover',function(){
+				var nowClass = d3.select(this).attr('class');
+			})
+		} , 2000 );
 
 		return true;
 	};
