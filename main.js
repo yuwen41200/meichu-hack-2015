@@ -6,7 +6,7 @@ $.getJSON("data.json", function(data) {
 	root = data;
 	// create view
 	createView(transformData(root));
-	yeee();
+	yeee(root);
 });
 
 function analyzeReceivedNode(node) {
@@ -205,14 +205,12 @@ var chart2_scope = function(){
 	color = d3.scale.category20();
 	for(i=0 ; i<20 ; ++i) colorize.push( color(i) );
 	var renderBlock = document.querySelector('#studentsBlock');
-	var maxWidth = renderBlock.offsetWidth * 0.9;
-	var maxHeight = renderBlock.offsetHeight * 0.9;
-	var diffWidth = renderBlock.offsetWidth * 0.05;
-	var diffHeight = renderBlock.offsetHeight * 0.05;
+	var maxWidth = renderBlock.offsetWidth * 0.95;
+	var maxHeight = renderBlock.offsetHeight * 0.95;
 	var randPos = function(){
 		return function(){
-			var nowX = Math.random() * maxWidth + diffWidth;
-			var nowY = Math.random() * maxHeight + diffHeight;
+			var nowX = Math.random() * maxWidth;
+			var nowY = Math.random() * maxHeight;
 			return 'translate('+nowX.toFixed(0)+' '+nowY.toFixed(0)+')';
 		};
 	}();
@@ -225,7 +223,7 @@ var chart2_scope = function(){
 	return function(){
 
 		if( items.length <= 0 )
-			return false;
+			return true;
 
 		d3.select("#iconExplain").selectAll('path').remove();
 		d3.select("#iconExplain").selectAll('text').remove();
@@ -279,7 +277,7 @@ var chart2_scope = function(){
 		var nowX = 0 , nowY = 0;
 		var studentWork = [];
 		for(i=0 ; i<category.length ; ++i){
-			var to = category[i].num / 20;
+			var to = category[i].num / 100;
 			for(var j=0 ; j<=to ; ++j){
 				studentWork.push({
 					colorCode: colorize[i],
@@ -287,7 +285,7 @@ var chart2_scope = function(){
 					tpos: 'translate('+nowX+' '+nowY+')'
 				});
 				nowX += 20;
-				if( nowX >= maxWidth-20 ) nowX = 0 , nowY += 20;
+				if( nowX >= maxWidth ) nowX = 0 , nowY += 20;
 			}
 		}
 
