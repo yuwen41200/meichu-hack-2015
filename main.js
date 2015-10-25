@@ -235,7 +235,7 @@ function getScrollY(){
 		return document.body.scrollTop;
 }
 var bubbleup = function(){
-	if( studentsShowed || getScrollY() < 400 ) return;
+	if( studentsShowed || getScrollY() < 200 ) return;
 	studentsShowed = true;
 
 	studentsSet.transition()
