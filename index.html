@@ -18,11 +18,15 @@
 			transition-duration: 100ms;
 		}
 		#pie.focused path {
-			opacity: .3;
+			opacity: .2;
 		}
 		#pie.focused path:hover {
-			opacity: 1;
+			opacity: .65;
 		}
+    #pie path.active, #pie path.active:hover {
+      opacity: 1;
+      filter: drop-shadow(0 0 8px currentColor);
+    }
 	</style>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -59,7 +63,7 @@
 			<article class="col-md-8">
 				<svg id="chart1">
 					<g id="yeeee-text">
-						<text id="yeeee1" style="transform: translateY(-.7em); text-anchor: middle; font-size: 2.4em;"></text>
+						<text id="yeeee1" style="transform: translateY(-.7em); text-anchor: middle; font-size: 2.4em;">請將滑鼠移進圓圈</text>
 						<text id="yeeee2" style="transform: translateY(.4em); text-anchor: middle; font-size: 1.2em;" fill="#999"></text>
 						<text id="yeeee3" style="transform: translateY(1.7em); text-anchor: middle; font-size: 1.2em;" fill="#999"></text>
 						<text id="yeeeey" style="transform: translateY(2.6em); text-anchor: middle; font-size: 1.6em;" fill="#333"></text>
