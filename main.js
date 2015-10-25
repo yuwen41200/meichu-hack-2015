@@ -128,7 +128,9 @@ function makeTreeRecursively(arr) {
 
 function pieSetSelection(obj) {
 	// show text in the middle of the graph
-	d3.select('#yeeee1').text('[ 總計 ]');
+	d3.select('#yeeee1')
+		.text('[ 總計 ]')
+		.style('fill', null);
 	// show all number
 	d3.select('#yeeeey').text(obj.value);
 	if (obj.depth === 0) {
