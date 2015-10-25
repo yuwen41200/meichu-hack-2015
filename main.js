@@ -285,7 +285,10 @@ var chart2_scope = function(){
 					tpos: 'translate('+nowX+' '+nowY+')'
 				});
 				nowX += 20;
-				if( nowX >= maxWidth ) nowX = 0 , nowY += 20;
+				if(nowX >= maxWidth) {
+					nowX = 0;
+					nowY += 20;
+				}
 			}
 		}
 
@@ -302,7 +305,7 @@ var chart2_scope = function(){
 		studentsSet.transition()
 			.duration(800)
 			.delay(function(){ return (Math.random()*800).toFixed(0); })
-			.attr('transform' , function(it){ return it.pos + ' scale(0.8 0.8)'; })
+			.attr('transform' , function(it){ return it.pos + ' scale(0.8 0.8)'; });
 	
 		studentsSet.transition()
 			.duration(800)
