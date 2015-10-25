@@ -1,6 +1,7 @@
 // 檔 不能 沒有註解
 var root = null;
 var items = [];
+var pieSelectedPath = null;
 
 $.getJSON("data.json", function(data) {
 	root = data;
@@ -125,6 +126,28 @@ function makeTreeRecursively(arr) {
 	return list;
 }
 
+function pieSetSelection(obj) {
+	// show text in the middle of the graph
+	d3.select('#yeeee1').text('[ 總計 ]');
+	// show all number
+	d3.select('#yeeeey').text(obj.value);
+	if (obj.depth === 0) {
+		d3.selectAll('#pie').classed('focused', false);
+		return;
+	}
+	d3.selectAll('#pie').classed('focused', true);
+
+	var yyee = obj;
+	switch (obj.depth) {
+		case 3: d3.select('#yeeee3').text(yyee.name).style('fill', yyee.__color); yyee = yyee.parent;
+		/* falls through */
+		case 2: d3.select('#yeeee2').text(yyee.name).style('fill', yyee.__color); yyee = yyee.parent;
+		/* falls through */
+		case 1: d3.select('#yeeee1').text(yyee.name).style('fill', yyee.__color);
+	}
+	return obj;
+}
+
 function pieClearSelection() {
 	d3.selectAll('#pie').classed('focused', false);
 	d3.select('#yeeee1').text('');
@@ -142,7 +165,8 @@ function createView(viewObj) {
 		.style('opacity', 0)
 		.on('mouseleave', function() {
 			// if not locked clear the selection
-			pieClearSelection();
+			if (!pieSelectedPath)
+				pieClearSelection();
 		});
 
 	var nodes = partition.nodes(viewObj).filter(function(d) {
@@ -158,36 +182,33 @@ function createView(viewObj) {
 			.style('fill', function(d, i) {
 				if (d.depth === 0)
 					return 'transparent';
-				return color(i % 10);
+				return d.__color = color(i % 10);
+			})
+			.style('color', function(d, i) {
+				// ditto
+				return d.__color;
 			})
 			.on('mouseover', function(evt) {
 				// if it was locked
-				// or whatever
-				pieClearSelection();
-				// show text in the middle of the graph
-				d3.select('#yeeee1').text('[ 總計 ]');
-				// show all number
-				d3.select('#yeeeey').text(evt.value);
-				if (evt.depth === 0) {
-					d3.selectAll('#pie').classed('focused', false);
+				if (pieSelectedPath) {
+					// do no update
 					return;
 				}
-				d3.selectAll('#pie').classed('focused', true);
-
-				var yyee = evt;
-				switch (evt.depth) {
-					case 3: d3.select('#yeeee3').text(yyee.name); yyee = yyee.parent;
-					/* falls through */
-					case 2: d3.select('#yeeee2').text(yyee.name); yyee = yyee.parent; 
-					/* falls through */
-					case 1: d3.select('#yeeee1').text(yyee.name);
-				}
-				// d3.select("#explanation")
-				// 	.style("visibility", "");
+				// or whatever
+				pieClearSelection();
+				pieSetSelection(evt);
 				analyzeReceivedNode(evt.original);
 			})
-			.on('click', function() {
+			.on('click', function(evt) {
 				// toggle lock
+				d3.selectAll('#pie path.active').classed('active', false);
+				if (pieSelectedPath == this) {
+					pieSelectedPath = null;
+					return;
+				}
+				pieSelectedPath = this;
+				d3.select(this).classed('active', true);
+				pieSetSelection(evt);
 			});
 }
 
@@ -303,7 +324,7 @@ var chart2_scope = function(){
 			.duration(800)
 			.delay(function(){ return (Math.random()*800).toFixed(0); })
 			.attr('transform' , function(it){ return it.pos + ' scale(0.8 0.8)'; })
-	
+
 		studentsSet.transition()
 			.duration(800)
 			.delay(800)
