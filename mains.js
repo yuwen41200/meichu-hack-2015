@@ -178,7 +178,7 @@ function createView(viewObj) {
 				switch (evt.depth) {
 					case 3: d3.select('#yeeee3').text(yyee.name); yyee = yyee.parent;
 					/* falls through */
-					case 2: d3.select('#yeeee2').text(yyee.name); yyee = yyee.parent; 
+					case 2: d3.select('#yeeee2').text(yyee.name); yyee = yyee.parent;
 					/* falls through */
 					case 1: d3.select('#yeeee1').text(yyee.name);
 				}
@@ -306,7 +306,7 @@ var chart2_scope = function(){
 			.duration(800)
 			.delay(function(){ return (Math.random()*800).toFixed(0); })
 			.attr('transform' , function(it){ return it.pos + ' scale(0.8 0.8)'; });
-	
+
 		studentsSet.transition()
 			.duration(800)
 			.delay(800)
