@@ -199,7 +199,6 @@ function createView(viewObj) {
 				}
 				// or whatever
 				pieSetSelection(evt);
-				console.log(evt);
 				analyzeReceivedNode(evt.original);
 				// if (evt.depth == 0)
 				// 	analyzeReceivedNode();
