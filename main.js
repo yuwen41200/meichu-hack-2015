@@ -205,11 +205,11 @@ var chart2_scope = function(){
 	color = d3.scale.category20();
 	for(i=0 ; i<20 ; ++i) colorize.push( color(i) );
 	var renderBlock = document.querySelector('#studentsBlock');
+	var maxWidth = renderBlock.offsetWidth * 0.9;
+	var maxHeight = renderBlock.offsetHeight * 0.9;
+	var diffWidth = renderBlock.offsetWidth * 0.05;
+	var diffHeight = renderBlock.offsetHeight * 0.05;
 	var randPos = function(){
-		var maxWidth = renderBlock.offsetWidth * 0.9;
-		var maxHeight = renderBlock.offsetHeight * 0.9;
-		var diffWidth = renderBlock.offsetWidth * 0.05;
-		var diffHeight = renderBlock.offsetHeight * 0.05;
 		return function(){
 			var nowX = Math.random() * maxWidth + diffWidth;
 			var nowY = Math.random() * maxHeight + diffHeight;
@@ -276,14 +276,19 @@ var chart2_scope = function(){
 			}).text(function(it){ return it.data; });
 
 
+		var nowX = 0 , nowY = 0;
 		var studentWork = [];
 		for(i=0 ; i<category.length ; ++i){
 			var to = category[i].num / 20;
-			for(var j=0 ; j<=to ; ++j)
+			for(var j=0 ; j<=to ; ++j){
 				studentWork.push({
 					colorCode: colorize[i],
-					pos: randPos()
+					pos: randPos(),
+					tpos: 'translate('+nowX+' '+nowY+')'
 				});
+				nowX += 20;
+				if( nowX >= maxWidth-20 ) nowX = 0 , nowY += 20;
+			}
 		}
 
 		dataBind = d3.select("#chart2").selectAll('path').data(studentWork);
@@ -299,7 +304,12 @@ var chart2_scope = function(){
 		studentsSet.transition()
 			.duration(800)
 			.delay(function(){ return (Math.random()*800).toFixed(0); })
-			.attr('transform' , function(it){ return it.pos + ' scale(0.5 0.5)'; });
+			.attr('transform' , function(it){ return it.pos + ' scale(0.8 0.8)'; })
+	
+		studentsSet.transition()
+			.duration(800)
+			.delay(800)
+			.attr('transform' , function(it){ return it.tpos + ' scale(0.5 0.5)'; });
 
 		return true;
 	};
