@@ -110,7 +110,7 @@ var arc = d3.svg.arc()
 	.outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
 
 function transformData(json) {
-	return {name: 'root', children: makeTreeRecursively(json)};
+	return {name: 'root', children: makeTreeRecursively(json), original: json};
 }
 
 function makeTreeRecursively(arr) {
@@ -199,7 +199,10 @@ function createView(viewObj) {
 				}
 				// or whatever
 				pieSetSelection(evt);
+				console.log(evt);
 				analyzeReceivedNode(evt.original);
+				// if (evt.depth == 0)
+				// 	analyzeReceivedNode();
 			})
 			.on('click', function(evt) {
 				// toggle lock
@@ -208,7 +211,10 @@ function createView(viewObj) {
 					pieSelectedPath = null;
 					return;
 				}
-				pieSelectedPath = this;
+				if (evt.depth == 0)
+					pieSelectedPath = null;
+				else
+					pieSelectedPath = this;
 				d3.select(this).classed('active', true);
 				pieSetSelection(evt);
 				analyzeReceivedNode(evt.original);
